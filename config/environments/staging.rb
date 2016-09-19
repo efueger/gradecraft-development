@@ -25,6 +25,10 @@ Rails.application.configure do
   config.i18n.fallbacks = true
   config.log_level = :debug
   config.public_file_server.enabled = ["1", "yes", "true", "on"].include?(ENV["GC_SERVE_STATIC_FILES"] || "0" )
+
+  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  config.force_ssl = true
+
   config.session_store :active_record_store, :expire_after => 60.minutes
 end
 
