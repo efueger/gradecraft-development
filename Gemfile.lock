@@ -9,6 +9,44 @@ GIT
       rspec-expectations (>= 3.0.0)
       rspec-mocks (>= 3.0.0)
 
+GIT
+  remote: https://github.com/venturit/ims-lti.git
+  revision: d801b95b0010e4cc64c1dbcf10fb6c12b3d27c23
+  branch: master
+  specs:
+    ims-lti (1.1.9)
+      builder
+
+GIT
+  remote: https://github.com/venturit/oauth-ruby.git
+  revision: 3eac89919fd54e2ee825b7b37a985d1a82e6fd91
+  branch: master
+  specs:
+    oauth (0.4.7)
+
+GIT
+  remote: https://github.com/venturit/omniauth-lti.git
+  revision: 8ef2d2bceb104fc9207a298e744926793fd0e8ac
+  branch: master
+  specs:
+    omniauth-lti (0.0.2.pre.SANPSHOT)
+
+GIT
+  remote: https://github.com/wandenberg/moped.git
+  revision: 470224c0361f21112d1a988982af2702f73d9eb2
+  branch: operation_timeout
+  specs:
+    moped (2.0.4)
+      bson (~> 2.2)
+      connection_pool (~> 2.0)
+      optionable (~> 0.2.0)
+
+PATH
+  remote: components
+  specs:
+    gradebook (0.0.1)
+      rails (~> 4.2.3)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -648,6 +686,7 @@ DEPENDENCIES
   fog
   font-awesome-rails (~> 4.7)
   foreman
+  gradebook!
   haml
   haml-rails
   httparty
@@ -717,6 +756,9 @@ DEPENDENCIES
   webmock
   whenever
   wysiwyg-rails
+
+RUBY VERSION
+   ruby 2.2.2p95
 
 RUBY VERSION
    ruby 2.2.2p95
