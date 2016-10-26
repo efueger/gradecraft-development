@@ -7,8 +7,8 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address => ENV.fetch("MAILCATCHER_HOST", "gcmailcatcher"),
-    :port => ENV.fetch("MAILCATCHER_PORT", 25).to_i,
+    :address => ENV.fetch("MAIL_HOST", "gcmailcatcher"),
+    :port => ENV.fetch("MAIL_PORT", 25).to_i,
   }
   config.action_mailer.perform_deliveries = true
 
