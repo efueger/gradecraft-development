@@ -14,7 +14,7 @@ Mongoid.configure do |config|
     end
 
     settings = {
-      sessions: {
+      clients: {
           default: {
             uri: mongodb_uri,
             options: mongodb_options
