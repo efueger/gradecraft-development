@@ -335,7 +335,7 @@ module ActiveLMS
     #   "assignment_visible": true,
     #   "excused": true
     # }]
-    def grades(course_id, assignment_ids, grade_ids=nil)
+    def grades(course_id, assignment_ids, grade_ids=nil, &exception_handler)
       grades = []
       params = { assignment_ids: assignment_ids,
                  student_ids: "all",
@@ -352,6 +352,10 @@ module ActiveLMS
         end
       end
       grades
+    rescue JSON::ParserError => e
+      if block_given?
+        exception_handler.call(e)
+      end
     end
 
     def update_assignment(course_id, assignment_id, params)
