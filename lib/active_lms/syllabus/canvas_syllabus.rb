@@ -352,9 +352,11 @@ module ActiveLMS
         end
       end
       grades
-    rescue JSON::ParserError => e
+    rescue Canvas::ResponseError, HTTParty::Error, JSON::ParserError => e
       if block_given?
         exception_handler.call(e)
+      else
+        raise e
       end
     end
 
@@ -364,7 +366,7 @@ module ActiveLMS
         "/courses/#{course_id}/assignments/#{assignment_id}", :put, params) do |data|
           assignment = data
       end
-        assignment
+      assignment
     end
 
     # Internal: Retrieves single user from the Canvas API.
