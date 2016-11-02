@@ -339,6 +339,7 @@ module ActiveLMS
     #   "excused": true
     # }]
     def grades(course_id, assignment_ids, grade_ids=nil, &exception_handler)
+      handle_exceptions(exception_handler) do
       grades = []
       params = { assignment_ids: assignment_ids,
                  student_ids: "all",
@@ -353,13 +354,7 @@ module ActiveLMS
             grades << grade
           end
         end
-      end
-      grades
-    rescue Canvas::ResponseError, HTTParty::Error, JSON::ParserError => e
-      if block_given?
-        exception_handler.call(e)
-      else
-        raise e
+        grades
       end
     end
 
@@ -408,5 +403,15 @@ module ActiveLMS
     private
 
     attr_reader :client
+
+    def handle_exceptions(exception_handler, &blk)
+      blk.call
+    rescue Canvas::ResponseError, HTTParty::Error, JSON::ParserError => e
+      if !exception_handler.nil?
+        exception_handler.call(e)
+      else
+        raise e
+      end
+    end
   end
 end
