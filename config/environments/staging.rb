@@ -27,7 +27,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ["1", "yes", "true", "on"].include?(ENV["GC_SERVE_STATIC_FILES"] || "0" )
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = ["1", "yes", "true", "on"].include?(ENV["GC_FORCE_SSL"] || "0" )
 
   config.session_store :active_record_store, :expire_after => 60.minutes
 end
