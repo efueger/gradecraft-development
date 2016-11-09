@@ -19,6 +19,9 @@ else
   aws.rb -e 'Aws::S3::Resource.new.bucket("gc-staging-deploy").object("saml_idp.pem").get(response_target: "saml_idp.pem")'
   export IDP_CERT=/gradecraft/saml_idp.pem
 
+  bundle exec rake assets:precompile
+  bundle exec rake db:migrate
+
   bundle exec rake resque:scheduler &
   bundle exec puma
 fi
