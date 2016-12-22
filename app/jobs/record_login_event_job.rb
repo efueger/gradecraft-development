@@ -19,9 +19,12 @@ class RecordLoginEventJob < ApplicationJob
     course_membership = CourseMembership.find_by user_id: data[:user_id],
       course_id: data[:course_id]
 
-    @logged_data = data.merge(last_login_at: course_membership.last_login_at.try(:to_i))
-    result = Analytics::LoginEvent.create logged_data
+    last_login_at = course_membership.try(:last_login_at).try(:to_i)
+    @logged_data = data.merge(last_login_at: last_login_at)
+    Analytics::LoginEvent.create logged_data
 
-    course_membership.update_attributes last_login_at: data[:created_at]
+    unless course_membership.nil?
+      course_membership.update_attributes last_login_at: data[:created_at]
+    end
   end
 end

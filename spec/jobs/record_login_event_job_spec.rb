@@ -58,9 +58,30 @@ RSpec.describe RecordLoginEventJob do
     end
 
     context "without a course membership found" do
+      let(:missing_membership_data) { data.merge(user_id: someone_else.id) }
+      let(:someone_else) { create :user }
+
+      it "does not update the course membership's last login timestamp" do
+        expect {
+          described_class.perform_now missing_membership_data, logger
+        }.to_not change { professor_course_membership }
+      end
+
+      it "logs a nil last login at timestamp" do
+        expect(logger).to receive(:info).with \
+          "Successfully logged login event data "\
+          "#{missing_membership_data.merge(last_login_at: nil)}"
+
+        described_class.perform_now missing_membership_data, logger
+      end
+    end
+
+    context "without a user role specified" do
+      xit "logs a failure outcome message"
     end
 
     context "without a valid response from the analyitics event" do
+      xit "logs a failure outcome message"
     end
   end
 end
