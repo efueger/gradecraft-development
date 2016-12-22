@@ -37,7 +37,7 @@ RSpec.describe RecordLoginEventJob do
 
     it "logs a successful outcome message" do
       expect(logger).to receive(:info).with \
-        "Successfully logged login event data "\
+        "Successfully logged login event with data "\
         "#{data.merge(last_login_at: last_login_at.to_i)}"
 
       described_class.perform_now data, logger
@@ -69,7 +69,7 @@ RSpec.describe RecordLoginEventJob do
 
       it "logs a nil last login at timestamp" do
         expect(logger).to receive(:info).with \
-          "Successfully logged login event data "\
+          "Successfully logged login event with data "\
           "#{missing_membership_data.merge(last_login_at: nil)}"
 
         described_class.perform_now missing_membership_data, logger
@@ -77,11 +77,28 @@ RSpec.describe RecordLoginEventJob do
     end
 
     context "without a user role specified" do
-      xit "logs a failure outcome message"
+      let(:missing_role_data) { data.merge(user_role: nil) }
+
+      it "logs a failure outcome message" do
+        expect(logger).to receive(:info).with \
+          "Failed to log login event with data "\
+          "#{missing_role_data}"
+
+        described_class.perform_now missing_role_data, logger
+      end
     end
 
     context "without a valid response from the analyitics event" do
-      xit "logs a failure outcome message"
+      it "logs a failure outcome message" do
+        expect(logger).to receive(:info).with \
+          "Failed to log login event with data "\
+          "#{data}"
+
+        invalid_analytics_event = double(:analytics_event, valid?: false)
+        allow(Analytics::LoginEvent).to receive(:create).and_return invalid_analytics_event
+
+        described_class.perform_now data, logger
+      end
     end
   end
 end
