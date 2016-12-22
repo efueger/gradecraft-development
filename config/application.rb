@@ -14,6 +14,8 @@ module GradeCraft
     config.assets.precompile += %w(.svg .eot .otf .woff .ttf)
     config.filter_parameters += [:password]
 
+    config.active_job.queue_adapter = :resque
+
     config.i18n.enforce_available_locales = true
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     config.angular_templates.ignore_prefix  = %w(angular/templates/)
