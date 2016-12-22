@@ -1,3 +1,5 @@
+#TODO: Define NilLogger and place in system that supports the AJ background jobs
+#TODO: Move this to it's own file in a system that supports the AJ background jobs
 class JobFailedError < RuntimeError
   attr_reader :job
 
@@ -12,23 +14,24 @@ class RecordLoginEventJob < ApplicationJob
 
   attr_reader :logged_data
 
-  before_perform do |job|
-    data = job.arguments.first
-    logger = job.arguments.second
+  def data
+    self.arguments.first
+  end
 
-    logger.info "Starting LoginEventLogger with data #{data}"
+  def logger
+    self.arguments.second
+  end
+
+  before_perform do |job|
+    job.logger.info "Starting LoginEventLogger with data #{data}"
   end
 
   after_perform do |job|
-    logger = job.arguments.second
-    logger.info "Successfully logged login event with data #{job.logged_data}"
+    job.logger.info "Successfully logged login event with data #{job.logged_data}"
   end
 
   rescue_from JobFailedError do |exception|
-    data = exception.job.arguments.first
-    logger = exception.job.arguments.second
-
-    logger.info "Failed to log login event with data #{data}"
+    exception.job.logger.info "Failed to log login event with data #{exception.job.data}"
   end
 
   def perform(data={}, logger=NilLogger.new)
