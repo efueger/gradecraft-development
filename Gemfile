@@ -64,6 +64,7 @@ gem 'omniauth-lti', '~> 0.0.2'
 gem 'pacecar'
 gem 'paper_trail'
 gem 'pg'
+gem 'porch'
 gem 'puma'
 gem 'rack-mini-profiler', require: false
 gem 'rails_autolink'
