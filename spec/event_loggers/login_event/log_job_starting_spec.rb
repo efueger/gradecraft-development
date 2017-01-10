@@ -2,7 +2,7 @@ require "porch"
 require "./lib/null_logger"
 require "./app/event_loggers/login_event/log_job_starting"
 
-describe EventLoggers::LoginEvent::LogJobStarting do
+describe EventLoggers::LogJobStarting do
   describe "#call" do
     let(:context) { Porch::Context.new({ logger: logger }.merge(data)) }
     let(:data) { { blah: :bleh }}
