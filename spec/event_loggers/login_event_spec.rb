@@ -35,7 +35,7 @@ describe EventLoggers::LoginEvent do
     end
 
     it "updates the last login time" do
-      expect_any_instance_of(UpdateLastLogin).to \
+      expect_any_instance_of(EventLoggers::UpdateLastLogin).to \
         receive(:call).with(hash_including(:course_membership, :created_at)).and_call_original
 
       subject.log data
