@@ -15,23 +15,21 @@ describe EventLoggers::UpdateLastLogin do
       expect(result.course_membership.last_login_at).to eq created_at
     end
 
-    it "skips the remaining actions if the course membership is not passed in" do
+    it "skips the current action if the course membership is not passed in" do
       context.delete :course_membership
 
       result = nil
       expect { subject.call context }.to raise_error { |error| result = error.context }
 
-      expect(result).to be_skip_remaining
       expect(course_membership.last_login_at).to be_nil
     end
 
-    it "skips the remaining actions if the created at is not passed in" do
+    it "skips the current action if the created at is not passed in" do
       context.delete :created_at
 
       result = nil
       expect { subject.call context }.to raise_error { |error| result = error.context }
 
-      expect(result).to be_skip_remaining
       expect(course_membership.last_login_at).to be_nil
     end
   end

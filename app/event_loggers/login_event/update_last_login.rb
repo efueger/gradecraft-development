@@ -1,7 +1,7 @@
 module EventLoggers
   class UpdateLastLogin
     def call(context)
-      context.guard do
+      context.next do
         required(:created_at).filled
         required(:course_membership).filled
       end
