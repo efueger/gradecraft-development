@@ -12,7 +12,7 @@ module EventLoggers
 
       context.guard! { required(:user_role).filled }
 
-      result = Analytics::LoginEvent.create(context)
+      result = Analytics::LoginEvent.create(context.merge(event_type: :login))
       context.fail! unless result.valid?
     end
   end
