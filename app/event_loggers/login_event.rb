@@ -1,29 +1,7 @@
 require "porch"
-
-class FindCourseMembership
-  def call(context)
-    user_id = context[:user].try(:id)
-    course_id = context[:course].try(:id)
-
-    context[:course_membership] = CourseMembership.find_by user_id: user_id, course_id: course_id
-  end
-end
-
-class LogJobStarting
-  def call(context)
-    logged_data = context.reject { |k| k == :logger }
-    context[:logger].info "Starting LoginEventLogger with data #{logged_data}"
-    context
-  end
-end
-
-class LogJobEnded
-  def call(context)
-    logged_data = context.reject { |k| k == :logger }
-    context[:logger].info "Sucessfully logged login event with data #{logged_data}"
-    context
-  end
-end
+require_relative "login_event/find_course_membership"
+require_relative "login_event/log_job_starting"
+require_relative "login_event/log_job_ended"
 
 class RecordAnalyticsEvent
   def call(context)

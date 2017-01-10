@@ -21,14 +21,14 @@ describe EventLoggers::LoginEvent do
 
   describe "#log" do
     it "logs that the job is starting" do
-      expect_any_instance_of(LogJobStarting).to \
+      expect_any_instance_of(EventLoggers::LogJobStarting).to \
         receive(:call).with(hash_including(:logger)).and_call_original
 
       subject.log data
     end
 
     it "finds the course membership" do
-      expect_any_instance_of(FindCourseMembership).to \
+      expect_any_instance_of(EventLoggers::FindCourseMembership).to \
         receive(:call).with(hash_including(:user, :course)).and_call_original
 
       subject.log data
@@ -49,7 +49,7 @@ describe EventLoggers::LoginEvent do
     end
 
     it "logs that the job has ended" do
-      expect_any_instance_of(LogJobEnded).to \
+      expect_any_instance_of(EventLoggers::LogJobEnded).to \
         receive(:call).with(hash_including(:logger)).and_call_original
 
       subject.log data
