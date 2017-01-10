@@ -1,5 +1,4 @@
 require "active_record_spec_helper"
-require "./lib/analytics"
 require "./lib/null_logger"
 require "./app/event_loggers/login_event"
 
@@ -10,14 +9,18 @@ describe EventLoggers::LoginEvent do
     {
       course: course,
       user: user,
+      user_role: "student",
       student: nil,
       request: request
     }
   end
   let(:logger) { NullLogger.new }
   let(:request) { double(:request) }
+  let(:result) { double(:analytics_event, valid?: true) }
   let(:user) { course_membership.user }
   subject { described_class.new logger }
+
+  before { allow(Analytics::LoginEvent).to receive(:create).and_return result }
 
   describe "#log" do
     it "logs that the job is starting" do
@@ -42,7 +45,7 @@ describe EventLoggers::LoginEvent do
     end
 
     it "records the analytics event for a login" do
-      expect_any_instance_of(RecordAnalyticsEvent).to \
+      expect_any_instance_of(EventLoggers::RecordLoginEvent).to \
         receive(:call).and_call_original
 
       subject.log data
