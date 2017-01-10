@@ -5,9 +5,8 @@ describe EventLoggers::RecordLoginEvent do
   describe "#call" do
     let(:data) {{ last_login_at: Time.now,
                   course: double(:course),
-                  user: double(:user),
+                  user: double(:user, role: "student"),
                   student: nil,
-                  user_role: "student",
                   created_at: Time.now }}
     let(:context) { Porch::Context.new(data) }
     let(:result) { double(:event_result, valid?: true) }
@@ -18,7 +17,25 @@ describe EventLoggers::RecordLoginEvent do
       subject.call context
     end
 
-    it "fails if the user role is not present" do
+    it "fails if the user is not present" do
+      context.delete :user
+
+      result = nil
+      expect { subject.call context }.to raise_error { |error| result = error.context }
+
+      expect(result).to be_failure
+    end
+
+    it "fails if the course is not present" do
+      context.delete :course
+
+      result = nil
+      expect { subject.call context }.to raise_error { |error| result = error.context }
+
+      expect(result).to be_failure
+    end
+
+    it "fails if the user role is not found" do
       context.delete :user_role
 
       result = nil
