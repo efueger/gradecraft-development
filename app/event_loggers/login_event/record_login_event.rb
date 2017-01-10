@@ -13,7 +13,11 @@ module EventLoggers
       context.guard! { required(:user_role).filled }
 
       result = Analytics::LoginEvent.create(context.merge(event_type: :login))
-      context.fail! unless result.valid?
+
+      unless result.valid?
+        context.fail!(Porch::HumanError.new(result.errors).message)
+      end
+      context
     end
   end
 end
