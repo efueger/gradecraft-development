@@ -1,4 +1,3 @@
-#TODO: Define NilLogger and place in system that supports the AJ background jobs
 #TODO: Move this to it's own file in a system that supports the AJ background jobs
 class JobFailedError < RuntimeError
   attr_reader :job
@@ -19,7 +18,7 @@ class RecordLoginEventJob < ApplicationJob
   end
 
   def logger
-    self.arguments.second
+    self.arguments.second || NullLogger.new
   end
 
   before_perform do |job|
@@ -34,7 +33,7 @@ class RecordLoginEventJob < ApplicationJob
     exception.job.logger.info "Failed to log login event with data #{exception.job.data}"
   end
 
-  def perform(data={}, logger=NilLogger.new)
+  def perform(data={}, logger=NullLogger.new)
     raise JobFailedError.new("User role not specfied", self) if data[:user_role].blank?
 
     course_membership = CourseMembership.find_by user_id: data[:user_id],
