@@ -3,18 +3,26 @@ require "./app/event_loggers/login_event/record_login_event"
 
 describe EventLoggers::RecordLoginEvent do
   describe "#call" do
-    let(:data) {{ last_login_at: Time.now,
-                  course: double(:course),
-                  user: double(:user, role: "student"),
-                  student: nil,
-                  created_at: Time.now }}
     let(:context) { Porch::Context.new(data) }
+    let(:data) {{ course: double(:course, id: 123),
+                  last_login_at: Time.now.to_i,
+                  user: double(:user, id: 456, role: "student"),
+                  student: double(:student, id: 789),
+                  created_at: Time.now }}
     let(:result) { double(:event_result, valid?: true) }
 
     it "records a login event metric" do
-      event_context = context.merge(event_type: :login, user_role: "student")
+      event_data = {
+        course_id: data[:course].id,
+        user_id: data[:user].id,
+        student_id: data[:student].id,
+        user_role: "student",
+        last_login_at: Integer,
+        event_type: :login,
+        created_at: Time
+      }
 
-      expect(Analytics::LoginEvent).to receive(:create).with(event_context)
+      expect(Analytics::LoginEvent).to receive(:create).with(event_data)
         .and_return result
 
       subject.call context
@@ -47,7 +55,7 @@ describe EventLoggers::RecordLoginEvent do
       expect(result).to be_failure
     end
 
-    it "fails if the login event did not succeed", focus: true do
+    it "fails if the login event did not succeed" do
       allow(result).to receive(:valid?).and_return false
       allow(result).to receive(:errors).and_return({ email: ["is invalid"] })
       allow(Analytics::LoginEvent).to receive(:create).and_return result
