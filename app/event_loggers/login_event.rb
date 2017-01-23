@@ -6,7 +6,6 @@ require_relative "login_event/update_last_login"
 require_relative "login_event/record_login_event"
 
 #TODO: Log an error if one occurs (implement rescue_from?)
-#TODO: Add log vs. log later
 
 module EventLoggers
   class LoginEvent
@@ -19,13 +18,26 @@ module EventLoggers
     end
 
     def log(data)
-      with(data.merge(created_at: Time.now, logger: logger)) do |chain|
-        chain.add LogJobStarting
-        chain.add FindCourseMembership
-        chain.add UpdateLastLogin
-        chain.add RecordLoginEvent
-        chain.add LogJobEnded
+      with(merged_data(data)) do |chain|
+        steps.insert(3, RecordLoginEvent).each { |step| chain.add step }
       end
+    end
+
+    def log_later(data)
+    end
+
+    private
+
+    def merged_data(data)
+      data.merge(created_at: Time.now, logger: logger)
+    end
+
+    def steps
+      [LogJobStarting,
+       FindCourseMembership,
+       UpdateLastLogin,
+       # RecordLoginEvent will be inserted here with appropriate parameters
+       LogJobEnded]
     end
   end
 end
