@@ -1,11 +1,15 @@
 module EventLoggers
   class FindCourseMembership
     def call(context)
-      user_id = context.user.try(:id)
-      course_id = context.course.try(:id)
+      context[:course_membership] = nil
 
-      context[:course_membership] = CourseMembership.find_by user_id: user_id,
-        course_id: course_id
+      context.next do
+        required(:course).filled
+        required(:user).filled
+      end
+
+      context[:course_membership] = CourseMembership.find_by user_id: context.user.id,
+        course_id: context.course.id
       context
     end
   end
