@@ -22,7 +22,22 @@ describe EventLoggers::PrepareLoginEventData do
                                         created_at: created_at })
     end
 
-    xit "fails if the user is not present"
-    xit "fails if the course is not present"
+    it "fails if the user is not present" do
+      context.delete :user
+
+      result = nil
+      expect { subject.call context }.to raise_error { |error| result = error.context }
+
+      expect(result).to be_failure
+    end
+
+    it "fails if the course is not present" do
+      context.delete :course
+
+      result = nil
+      expect { subject.call context }.to raise_error { |error| result = error.context }
+
+      expect(result).to be_failure
+    end
   end
 end
