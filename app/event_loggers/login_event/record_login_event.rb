@@ -4,23 +4,13 @@ module EventLoggers
   class RecordLoginEvent
     def call(context)
       context.guard! do
-        required(:course).filled
-        required(:user).filled
+        required(:event_data).schema do
+          required(:course_id).filled
+          required(:user_id).filled
+        end
       end
 
-      context[:user_role] = context.user.role context.course
-
-      context.guard! { required(:user_role).filled }
-
-      data = {
-        course_id: context.course.id,
-        user_id: context.user.id,
-        student_id: context.student.try(:id),
-        user_role: context.user_role,
-        last_login_at: context.last_login_at,
-        event_type: :login,
-        created_at: Time.now
-      }
+      data = context.event_data.merge(last_login_at: context.last_login_at)
       result = Analytics::LoginEvent.create(data)
 
       unless result.valid?
