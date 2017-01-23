@@ -23,6 +23,13 @@ describe EventLoggers::LoginEvent do
   before { allow(Analytics::LoginEvent).to receive(:create).and_return result }
 
   describe "#log" do
+    it "prepares the event data" do
+      expect_any_instance_of(EventLoggers::PrepareLoginEventData).to \
+        receive(:call).with(hash_including(:course, :logger, :user)).and_call_original
+
+      subject.log data
+    end
+
     it "logs that the job is starting" do
       expect_any_instance_of(EventLoggers::LogJobStarting).to \
         receive(:call).with(hash_including(:logger)).and_call_original

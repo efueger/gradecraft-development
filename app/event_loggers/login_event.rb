@@ -2,6 +2,7 @@ require "porch"
 require_relative "login_event/find_course_membership"
 require_relative "login_event/log_job_starting"
 require_relative "login_event/log_job_ended"
+require_relative "login_event/prepare_login_event_data"
 require_relative "login_event/update_last_login"
 require_relative "login_event/record_login_event"
 
@@ -19,7 +20,7 @@ module EventLoggers
 
     def log(data)
       with(merged_data(data)) do |chain|
-        steps.insert(3, RecordLoginEvent).each { |step| chain.add step }
+        steps.insert(4, RecordLoginEvent).each { |step| chain.add step }
       end
     end
 
@@ -33,7 +34,8 @@ module EventLoggers
     end
 
     def steps
-      [LogJobStarting,
+      [PrepareLoginEventData,
+       LogJobStarting,
        FindCourseMembership,
        UpdateLastLogin,
        # RecordLoginEvent will be inserted here with appropriate parameters
