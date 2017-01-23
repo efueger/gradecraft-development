@@ -1,10 +1,12 @@
 module EventLoggers
   class LogJobEnded
     def call(context)
-      context.guard! { required(:logger).filled }
+      context.guard! do
+        required(:event_data).filled
+        required(:logger).filled
+      end
 
-      logged_data = context.reject { |k| k == :logger }
-      context.logger.info "Successfully logged login event with data #{logged_data}"
+      context.logger.info "Successfully logged login event with data #{context.event_data}"
       context
     end
   end
