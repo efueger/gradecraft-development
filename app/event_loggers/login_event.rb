@@ -6,8 +6,6 @@ require_relative "login_event/prepare_login_event_data"
 require_relative "login_event/update_last_login"
 require_relative "login_event/record_login_event"
 
-#TODO: Log an error if one occurs (implement rescue_from?)
-
 module EventLoggers
   class LoginEvent
     include Porch::Organizer
