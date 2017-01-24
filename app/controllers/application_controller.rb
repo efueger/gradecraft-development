@@ -1,5 +1,6 @@
 require "application_responder"
 require "lull"
+require "./app/event_loggers/login_event"
 
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
@@ -70,9 +71,8 @@ class ApplicationController < ActionController::Base
   def record_course_login_event(event_options = {})
     return unless request.format.html? || request.format.xml?
     event_attrs = event_session.merge event_options
-    return unless [:course, :user].all? { |attr| event_attrs[attr].present? }
-    current_user.course_memberships.where(course: current_course).first.last_login_at = Time.now
-    LoginEventLogger.new(event_attrs).enqueue_with_fallback
+
+    EventLoggers::LoginEvent.new.log_later(event_attrs.merge(request: nil))
   end
 
   # Session data used for building attributes hashes in EventLogger classes
