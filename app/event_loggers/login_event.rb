@@ -24,28 +24,18 @@ module EventLoggers
     end
 
     def log(data)
-      with(merged_data(data)) do |chain|
-        steps.insert(4, RecordLoginEvent).each { |step| chain.add step }
+      with(data.merge(created_at: Time.now)) do |chain|
+        chain.add PrepareLoginEventData
+        chain.add LogJobStarting
+        chain.add FindCourseMembership
+        chain.add UpdateLastLogin
+        chain.add RecordLoginEvent
+        chain.add LogJobEnded
       end
     end
 
     def log_later(data)
       EventLoggers::Job.perform_later self.class.name, "log", data
-    end
-
-    private
-
-    def merged_data(data)
-      data.merge(created_at: Time.now, logger: logger)
-    end
-
-    def steps
-      [PrepareLoginEventData,
-       LogJobStarting,
-       FindCourseMembership,
-       UpdateLastLogin,
-       # RecordLoginEvent will be inserted here with appropriate parameters
-       LogJobEnded]
     end
   end
 end

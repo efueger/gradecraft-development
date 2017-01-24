@@ -21,14 +21,13 @@ describe EventLoggers::LoginEvent do
   describe "#log" do
     it "prepares the event data" do
       expect_any_instance_of(EventLoggers::PrepareLoginEventData).to \
-        receive(:call).with(hash_including(:course, :logger, :user)).and_call_original
+        receive(:call).with(hash_including(:course, :user)).and_call_original
 
       subject.log data
     end
 
     it "logs that the job is starting" do
-      expect_any_instance_of(EventLoggers::LogJobStarting).to \
-        receive(:call).with(hash_including(:logger)).and_call_original
+      expect_any_instance_of(EventLoggers::LogJobStarting).to receive(:call).and_call_original
 
       subject.log data
     end
@@ -55,8 +54,7 @@ describe EventLoggers::LoginEvent do
     end
 
     it "logs that the job has ended" do
-      expect_any_instance_of(EventLoggers::LogJobEnded).to \
-        receive(:call).with(hash_including(:logger)).and_call_original
+      expect_any_instance_of(EventLoggers::LogJobEnded).to receive(:call).and_call_original
 
       subject.log data
     end
