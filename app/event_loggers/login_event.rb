@@ -24,7 +24,8 @@ module EventLoggers
     end
 
     def log_later(data)
-      EventLoggerJob.perform_later self.class.name, "log", data
+      EventLoggerJob.set(queue: :login_event_logger)
+        .perform_later self.class.name, "log", data
     end
   end
 end

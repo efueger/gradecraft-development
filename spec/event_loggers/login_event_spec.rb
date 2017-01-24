@@ -65,7 +65,7 @@ describe EventLoggers::LoginEvent do
     it "queues a job to be run later with the data provided" do
       subject.log_later data
 
-      expect(EventLoggerJob).to have_been_enqueued
+      expect(EventLoggerJob).to have_been_enqueued.on_queue("login_event_logger")
     end
   end
 end
