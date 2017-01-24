@@ -1,18 +1,16 @@
 require "porch"
-require "./lib/null_logger"
 require "./app/event_loggers/login_event/log_job_ended"
 
 describe EventLoggers::LogJobEnded do
   describe "#call" do
-    let(:context) { Porch::Context.new({ logger: logger, event_data: event_data }) }
+    let(:context) { Porch::Context.new({ event_data: event_data }) }
     let(:event_data) { { blah: :bleh }}
-    let(:logger) { NullLogger.new }
-    let(:rails) { double(logger: logger) }
+    let(:rails) { double(logger: double(:logger, info: nil)) }
 
     before { stub_const("Rails", rails) }
 
     it "logs the ending of the job to the logger" do
-      expect(logger).to \
+      expect(Rails.logger).to \
         receive(:info).with "Successfully logged login event with data #{event_data}"
 
       subject.call context
