@@ -11,10 +11,9 @@ describe EventLoggers::LoginEvent do
       student: nil
     }
   end
-  let(:logger) { NullLogger.new }
   let(:result) { double(:analytics_event, valid?: true) }
   let(:user) { course_membership.user }
-  subject { described_class.new logger }
+  subject { described_class.new }
 
   before { allow(Analytics::LoginEvent).to receive(:create).and_return result }
 
@@ -66,7 +65,7 @@ describe EventLoggers::LoginEvent do
     it "queues a job to be run later with the data provided" do
       subject.log_later data
 
-      expect(EventLoggers::Job).to have_been_enqueued
+      expect(EventLoggerJob).to have_been_enqueued
     end
   end
 end

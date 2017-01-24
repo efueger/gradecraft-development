@@ -9,19 +9,8 @@ require_relative "login_event/record_login_event"
 #TODO: Log an error if one occurs (implement rescue_from?)
 
 module EventLoggers
-  class Job < ActiveJob::Base
-    def perform(klass, method, data)
-    end
-  end
-
   class LoginEvent
     include Porch::Organizer
-
-    attr_accessor :logger
-
-    def initialize(logger)
-      @logger = logger
-    end
 
     def log(data)
       with(data.merge(created_at: Time.now)) do |chain|
@@ -35,7 +24,7 @@ module EventLoggers
     end
 
     def log_later(data)
-      EventLoggers::Job.perform_later self.class.name, "log", data
+      EventLoggerJob.perform_later self.class.name, "log", data
     end
   end
 end
