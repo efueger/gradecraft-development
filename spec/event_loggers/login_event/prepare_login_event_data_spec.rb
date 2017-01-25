@@ -6,7 +6,7 @@ describe EventLoggers::PrepareLoginEventData do
   describe "#call" do
     let(:context) { Porch::Context.new({ course: course, created_at: created_at,
                                          student: user, user: user })}
-    let!(:course_membership) { create :student_course_membership }
+    let!(:course_membership) { create :course_membership, :student }
     let(:course) { course_membership.course }
     let(:created_at) { Time.now }
     let(:user) { course_membership.user }
