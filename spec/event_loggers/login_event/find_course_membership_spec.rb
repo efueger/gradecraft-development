@@ -5,7 +5,7 @@ require "./app/event_loggers/login_event/find_course_membership"
 describe EventLoggers::FindCourseMembership do
   describe "#call" do
     let(:context) { Porch::Context.new({ course: course, user: user })}
-    let!(:course_membership) { create :student_course_membership }
+    let!(:course_membership) { create :course_membership, :student }
     let(:course) { course_membership.course }
     let(:user) { course_membership.user }
 
