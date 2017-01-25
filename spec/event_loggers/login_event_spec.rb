@@ -2,7 +2,7 @@ require "rails_spec_helper"
 
 describe EventLoggers::LoginEvent do
   let(:course) { course_membership.course }
-  let(:course_membership) { create :student_course_membership }
+  let(:course_membership) { create :course_membership, :student }
   let(:data) do
     {
       course: course,
