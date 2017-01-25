@@ -13,8 +13,8 @@ RSpec.describe ApplicationController do
     subject { get :html_page }
 
     let(:course) { build(:course) }
-    let(:user) { build(:user) }
-    let(:student) { build(:user) }
+    let(:user) { create(:user) }
+    let(:student) { create(:user) }
 
     let(:event_session) {{
       course: course,
@@ -74,7 +74,7 @@ RSpec.describe ApplicationController do
 
     describe "#record_course_login_event" do
       let(:result) { controller.record_course_login_event }
-      let(:logger_class) { LoginEventLogger }
+      let(:logger_class) { EventLoggers::LoginEvent }
 
       before do
         create :course_membership, :professor, course: course, user: user
@@ -85,55 +85,38 @@ RSpec.describe ApplicationController do
 
         it "should not build a LoginEventLogger" do
           allow(controller.request.format).to receive_messages(format)
-          expect(logger_class).not_to receive(:new).with event_session
+          expect(logger_class).not_to receive(:new)
           result
         end
       end
 
-      context "the request has insufficient event_attrs" do
-        before(:each) do
-          expect(logger_class).not_to receive :new
-        end
-
-        context "event_attrs does not have a :user" do
-          it "should not build a LoginEventLogger" do
-            controller.record_course_login_event user: nil
-          end
-        end
-
-        context "event_attrs does not have a :course" do
-          it "should not build a LoginEventLogger" do
-            controller.record_course_login_event course: nil
-          end
-        end
-      end
-
-      context "required event_attrs are present and request has a valid format" do
+      context "request has a valid format" do
         let(:event_logger) { logger_class.new }
         let(:enqueue_response) { double(:enqueue_response).as_null_object }
 
         before do
           allow(logger_class).to receive_messages(new: event_logger)
-          allow(event_logger).to receive_messages(enqueue: enqueue_response)
+          allow(event_logger).to receive_messages(log_later: enqueue_response)
         end
 
         context "no login_course is expressly given" do
           it "should creates a new login event with the event session data" do
-            expect(logger_class).to receive(:new).with(event_session)
+            expect(event_logger).to \
+              receive(:log_later).with(event_session.merge(request: nil))
             result
           end
         end
 
         context "custom event_options are given" do
           it "merges the event_options into the event_session" do
-            expect(logger_class).to receive(:new)
-              .with event_session.merge(mock_attr: "some-value")
+            expect(event_logger).to receive(:log_later)
+              .with event_session.merge(request: nil, mock_attr: "some-value")
             controller.record_course_login_event mock_attr: "some-value"
           end
         end
 
         it "should enqueue the new login event" do
-          expect(event_logger).to receive(:enqueue_with_fallback)
+          expect(event_logger).to receive(:log_later)
             .and_return enqueue_response
           result
         end
