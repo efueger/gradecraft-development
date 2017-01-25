@@ -6,7 +6,7 @@ describe EventLoggers::UpdateLastLogin do
   describe "#call" do
     let(:context) { Porch::Context.new({ course_membership: course_membership,
                                          created_at: created_at })}
-    let(:course_membership) { create :student_course_membership }
+    let(:course_membership) { create :course_membership, :student }
     let(:created_at) { Time.now }
 
     it "sets the last login for the course membership" do
