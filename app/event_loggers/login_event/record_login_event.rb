@@ -3,7 +3,7 @@ require "analytics"
 module EventLoggers
   class RecordLoginEvent
     def call(context)
-      context.guard! do
+      context.guard_with_failure do
         required(:event_data).schema do
           required(:course_id).filled
           required(:user_id).filled

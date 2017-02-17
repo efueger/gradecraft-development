@@ -1,7 +1,7 @@
 module EventLoggers
   class PrepareLoginEventData
     def call(context)
-      context.guard! do
+      context.guard_with_failure do
         required(:course).filled
         required(:user).filled
       end

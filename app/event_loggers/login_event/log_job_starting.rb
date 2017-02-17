@@ -1,7 +1,7 @@
 module EventLoggers
   class LogJobStarting
     def call(context)
-      context.guard! do
+      context.guard_with_failure do
         required(:event_data).filled
       end
 

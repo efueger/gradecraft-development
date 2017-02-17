@@ -3,7 +3,7 @@ module EventLoggers
     def call(context)
       context[:course_membership] = nil
 
-      context.next do
+      context.skip_next do
         required(:course).filled
         required(:user).filled
       end
