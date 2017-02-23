@@ -1,4 +1,4 @@
-class EventLoggerJob < ApplicationJob
+class EventLoggerJob < ResqueApplicationJob
   queue_as :event_logger
 
   def perform(klass, method, *params)
