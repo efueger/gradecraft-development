@@ -11,7 +11,7 @@ describe EventLoggers::LogJobEnded do
 
     it "logs the ending of the job to the logger" do
       expect(Rails.logger).to \
-        receive(:info).with "Successfully logged login event with data #{event_data}"
+        receive(:info).with "Successfully logged LoginEvent with data #{event_data}"
 
       subject.call context
     end

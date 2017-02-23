@@ -11,7 +11,7 @@ describe EventLoggers::LogJobStarting do
 
     it "logs the starting of the job to the logger" do
       expect(Rails.logger).to receive(:info)
-        .with "Starting LoginEventLogger with data #{event_data}"
+        .with "Starting LoginEvent with data #{event_data}"
 
       subject.call context
     end

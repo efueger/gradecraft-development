@@ -5,7 +5,7 @@ module EventLoggers
         required(:event_data).filled
       end
 
-      Rails.logger.info "Successfully logged login event with data #{context.event_data}"
+      Rails.logger.info "Successfully logged LoginEvent with data #{context.event_data}"
       context
     end
   end
