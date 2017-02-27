@@ -17,6 +17,7 @@
       required
       smart-number
       allow-negatives="false"
+      allow-null="true"
       name='lowest_points_{{$index}}')
 
   %span.validation-error(ng-show='gradeSchemeForm["lowest_points_{{$index}}"].$error.directConflict')

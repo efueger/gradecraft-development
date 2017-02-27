@@ -6,6 +6,7 @@
     $scope.grade_scheme_elements = $scope.gradeService.elements
 
     $scope.validateElements = (index)->
+      console.log "lowest_points: #{$scope.grade_scheme_elements[index].lowest_points}"
       for element, i in $scope.grade_scheme_elements
         $scope.gradeSchemeForm["lowest_points_#{i}"].$setValidity('directConflict', true)
         $scope.gradeSchemeForm["lowest_points_#{i}"].$setValidity('nearConflict', true)

@@ -2,6 +2,7 @@
   return {
     scope: {
       allowNegatives: "="
+      allowNull: '='
     }
     require: 'ngModel',
     link: (scope, element, attrs, modelCtrl)->
@@ -15,7 +16,7 @@
           inputValue = 0
         else if inputValue == ''
           modelCtrl.$setViewValue('')
-          inputValue = 0
+          inputValue = if scope.allowNull then null else 0
         else
           modelCtrl.$setViewValue($filter('number')(inputValue))
 
@@ -24,7 +25,9 @@
       )
 
       modelCtrl.$formatters.push((inputValue)->
-        return "" if isNaN(inputValue)
+        # debugger
+        defaultValue = if scope.allowNull then null else 0
+        return defaultValue if isNaN(inputValue)
         return $filter('number')(inputValue)
       )
   }
