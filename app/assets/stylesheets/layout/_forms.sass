@@ -100,28 +100,6 @@ ul.accepts_submission_types
 .checkbox label
   margin-left: .5rem
 
-.switch-label
-  text-transform: capitalize
-  font-weight: bold
-  display: inline-block
-  margin-bottom: 5px
-
-.switch label
-  margin-top: 1px
-
-.switch.predictor input:checked + label
-  background: $color-green-2
-
-.switch.predictor label:after
-  background: $color-green-1
-  border-radius: 4px
-
-.pass-fail-contingent.off
-  visibility: hidden
-
-.pass-fail-grade-toggle
-  padding-bottom: 16px
-
 .checkbox .form_label
   margin-left: 1.6rem
 
@@ -260,65 +238,6 @@ error
 input[type=text]
   padding: .5rem
   width: 15rem
-
-.switch-label
-  text-transform: capitalize
-  font-weight: bold
-  display: inline-block
-  margin-bottom: 5px
-
-.switch label
-  margin-top: 1px
-
-input#grade_pass_fail_status
-  max-height: 0
-  max-width: 0
-  opacity: 0
-
-input#grade_pass_fail_status + label
-  display: block
-  position: relative
-  text-indent: 3.5rem
-  height: 1.5rem
-  width: 50px
-  border-radius: 15px
-  background: $color-red-1
-  &:hover
-    cursor: pointer !important
-
-
-input#grade_pass_fail_status + label:before
-  content: ""
-  position: absolute
-  display: block
-  height: 1.5rem
-  width: 1.5rem
-  top: 0
-  left: 0
-  border-radius: 15px
-  background: $color-green-2
-  transition: .25s ease-in-out
-
-input#grade_pass_fail_status + label:after
-  content: ""
-  position: absolute
-  display: block
-  height: 1.5rem
-  width: 1.5rem
-  top: 0
-  left: 0px
-  border-radius: 15px
-  background: $color-white
-  box-shadow: inset 0 0 0 1px $color-grey-5
-  transition: .25s ease-in-out
-
-input#grade_pass_fail_status:checked + label:before
-  width: 50px
-  background: $color-green-2
-
-input#grade_pass_fail_status:checked + label:after
-  left: 30px
-  box-shadow: inset 0 0 0 1px $color-grey-5
 
 ul.locked-display li
   list-style: none
