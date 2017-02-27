@@ -188,6 +188,12 @@ Rails.application.routes.draw do
     resources :courses, only: [:create, :destroy, :index], module: :integrations
   end
 
+  resources :google_calendar, only: [ :index] do
+    collection do
+      get "/refresh_google_token/:id", action: :refresh_google_token, as: :refresh_google_token
+    end
+  end
+
   #9. Courses
 
   resources :courses, except: [:show, :destroy] do
@@ -299,6 +305,10 @@ Rails.application.routes.draw do
   get "saml/logout"
 
   get "lti/:provider/launch", to: "lti#launch", as: :launch_lti_provider
+
+  #Google Calendar
+  get 'auth/failure', to: redirect('/')
+  get 'signout', to: 'user_sessions#destroy', as: 'signout'
 
   #16. Uploads
   resource :uploads, only: [] do

@@ -26,5 +26,6 @@
             - if current_user_is_staff?
               .right
                 %ul.button-bar
+                  %li= link_to decorative_glyph(:copy) + "Google Calendar ", refresh_google_token_google_calendar_index_path(event), class: "button"
                   %li= link_to decorative_glyph(:edit) + "Edit", edit_event_path(event), class: "button"
                   %li= link_to decorative_glyph(:trash) + "Delete", event, :method => :delete, data: { :confirm => "Are you sure?" }, class: "button"

@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
   before_action :increment_page_views
   before_action :course_scores
   before_action :set_paper_trail_whodunnit
+  before_action :initialize_omniauth_state
 
   include ApplicationHelper
   include ImpersonationHelper
@@ -86,6 +87,10 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  def initialize_omniauth_state
+    session['omniauth.state'] = response.headers['X-CSRF-Token'] = form_authenticity_token
+  end
 
   # Core role authentication
   def ensure_student?
