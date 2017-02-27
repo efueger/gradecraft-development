@@ -3,8 +3,8 @@
 - if include_grade_info
   - if presenter.has_viewable_analytics?(student)
     .class-analytics-toggle
-      %h4.class-analytics-label Show class analytics
       %label.switch-socket
+        Show class analytics
         %input#class-analytics-toggle{:type => "checkbox", :checked => true}
         .switch-handle.round
   #rubric-graded.rubric

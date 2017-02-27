@@ -10,14 +10,12 @@ article.grade-form-fields
   padding: 1.5rem
 
 section.grade-pass-fail
-  .binary-switch-socket
-    margin: 1em 1em 0 1em
-    border: 1px solid $color-blue-3
-  .binary-switch-socket.off
-    background: $color-red-1
-    border: 1px solid $color-red-1
-  .binary-switch-label
-    margin-left: 1em
+  .switch-socket
+    width: 80px
+  .switch-handle
+    background-color: $color-red-1
+  input:checked + .switch-handle
+    background-color: $color-green-1
 
 section.grade-score-levels
   .grade-score-level-selector

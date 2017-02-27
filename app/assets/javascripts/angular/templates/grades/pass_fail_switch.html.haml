@@ -1,8 +1,5 @@
 %section.grade-pass-fail
-  .grade-section-label
-    {{textForTitle()}}
-  .binary-switch-socket(ng-click='toggleSwitch()' ng-class='switchState()')
-    .binary-switch-handle
-  .binary-switch-label
+  %label.switch-socket
     {{textForSwitch()}}
-
+    %input{:type => "checkbox", :checked => "true"}(ng-click='toggleSwitch()' ng-class='switchState()')
+    .switch-handle.round

@@ -323,54 +323,6 @@ input#grade_pass_fail_status:checked + label:after
 ul.locked-display li
   list-style: none
 
-// Switch-slider used on rubric grade pages to toggle class analytics
-// Box around switch-slider
-.switch-socket
-  position: relative
-  display: inline-block
-  width: 40px
-  height: 24px
-
-// Hides default HTML checkbox
-.switch-socket input
-  display: none
-
-// The slider
-.switch-handle
-  position: absolute
-  cursor: pointer
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
-  background-color: $color-grey-6
-  transition: .4s
-
-.switch-handle:before
-  position: absolute
-  content: ""
-  height: 20px
-  width: 20px
-  left: 2px
-  bottom: 2px
-  background-color: $color-white
-  transition: .4s
-
-
-input:checked + .switch-handle
-  background-color: $color-green-1
-
-input:focus + .switch-handle
-  box-shadow: 0 0 1px #2196F3
-
-input:checked + .switch-handle:before
-  transform: translateX(16px)
-
-.switch-handle.round
-  border-radius: 34px
-
-.switch-handle.round:before
-  border-radius: 50%
 
 // score levels form (assignment and challenge edit)
 .score-level-container

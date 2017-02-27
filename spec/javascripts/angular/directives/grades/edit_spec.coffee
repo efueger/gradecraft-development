@@ -24,7 +24,7 @@ describe 'gradeEdit directive', ()->
       expect($(@element).find("input.adjustment-points-input").length).toEqual(1)
 
     it 'does not load inputs for pass/fail, score level or rubrics', ()->
-      expect($(@element).find(".binary-switch-socket").length).toEqual(0)
+      expect($(@element).find(".switch-socket").length).toEqual(0)
       expect($(@element).find("#rubric-grade-edit").length).toEqual(0)
       expect($(@element).find(".grade-score-level-selector").length).toEqual(0)
 
