@@ -21,14 +21,14 @@ class GoogleCalendarController < ApplicationController
       end
       @event = current_course.events.find(params[:id])
 
-      if !@event.open_at.nil? and !@event.due_at.nil?
+      if !@event.open_at.nil? && !@event.due_at.nil?
         event = Calendar::Event.new({
-          :summary => @event.name,
-          :start => {
-            :date_time => @event.open_at.to_datetime.rfc3339
+          summary: @event.name,
+          start: {
+            date_time: @event.open_at.to_datetime.rfc3339
           },
-          :end => {
-            :date_time => @event.due_at.to_datetime.rfc3339
+          end: {
+            date_time: @event.due_at.to_datetime.rfc3339
           }
         })
 
