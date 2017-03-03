@@ -307,10 +307,6 @@ Rails.application.routes.draw do
 
   get "lti/:provider/launch", to: "lti#launch", as: :launch_lti_provider
 
-  #Google Calendar
-  get 'auth/failure', to: redirect('/')
-  get 'signout', to: 'user_sessions#destroy', as: 'signout'
-
   #16. Uploads
   resource :uploads, only: [] do
     get :remove

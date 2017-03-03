@@ -1,5 +1,8 @@
-module GoogleCalendarHelper
+require 'google/apis/calendar_v3'
+require 'google/api_client/client_secrets.rb'
+require 'googleauth'
 
+module GoogleCalendarHelper
   Calendar = Google::Apis::CalendarV3
 
   def get_google_authorization(current_user)
@@ -7,16 +10,16 @@ module GoogleCalendarHelper
   end
 
   def create_google_event(event)
-  google_event = Calendar::Event.new({
-    summary: event.name,
-    start: {
-      date_time: event.open_at.to_datetime.rfc3339
-    },
-    end: {
-      date_time: event.due_at.to_datetime.rfc3339
-    }
-  })
-  google_event
+    google_event = Calendar::Event.new({
+      summary: event.name,
+      start: {
+        date_time: event.open_at.to_datetime.rfc3339
+      },
+      end: {
+        date_time: event.due_at.to_datetime.rfc3339
+      }
+    })
+    google_event
   end
 
   def create_google_secrets(google_authorization)
