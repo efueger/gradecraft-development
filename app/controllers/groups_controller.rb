@@ -66,7 +66,6 @@ class GroupsController < ApplicationController
 
   def group_params
     params.require(:group).permit :name, :approved, :course_id,
-      proposals_attributes: [:approved, :title, :group_id, :submitted_by, :feedback, :proposal, :id],
       assignment_groups_attributes: [:assignment_id, :group_id, :id],
       group_membership_attributes: [:accepted, :group_id, :student_id, :id, :course_id],
       assignment_ids: [], student_ids: []
@@ -77,7 +76,7 @@ class GroupsController < ApplicationController
   end
 
   def find_group
-    @group = current_course.groups.includes(:proposals).find(params[:id])
+    @group = current_course.groups.find(params[:id])
   end
 
   def find_group_assignments

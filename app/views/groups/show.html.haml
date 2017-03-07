@@ -23,6 +23,3 @@
   - if @group.text_feedback?
     %h4 Instructor Feedback:
     %p= raw @group.try(:text_feedback)
-
-  - if @group.proposals.present?
-    = render partial: "groups/proposal_display", locals: { group: @group }

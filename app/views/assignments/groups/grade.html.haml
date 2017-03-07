@@ -9,10 +9,6 @@
     - @group.students.each do |s|
       %li= link_to s.name, student_path(s)
 
-    - if @group.proposals.present?
-      - @group.proposals.last do |prop|
-        = prop.title
-
   - if @assignment.accepts_submissions? && @submission.present? && SubmissionProctor.new(@submission).viewable?(current_user)
     %hr.grading-divider
 

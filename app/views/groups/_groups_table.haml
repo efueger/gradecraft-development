@@ -4,7 +4,6 @@
     %tr
       %th{:width => "20%"} #{term_for :group} Name
       %th{:style => "min-width: 200px"}= "#{current_course.student_term}s"
-      %th{:width => "10%"} Status
       %th{:style => "min-width: 200px"} #{term_for :assignments}
       %th{:style => "min-width: 250px"}
         %span.sr-only Action Buttons
@@ -15,7 +14,6 @@
         %td
           - group.group_memberships.each do |gm|
             %li= link_to gm.student.name, student_path(gm.student)
-        %td= group.approved
         %td
           - group.assignment_groups.each do |ag|
             %li= link_to ag.assignment.try(:name), ag.try(:assignment)

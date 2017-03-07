@@ -17,8 +17,6 @@ class Group < ActiveRecord::Base
   accepts_nested_attributes_for :group_memberships
 
   has_many :grades
-  has_many :proposals
-  accepts_nested_attributes_for :proposals, allow_destroy: true, reject_if: proc { |a| a["proposal"].blank? }
 
   has_many :submissions
   has_many :submissions_exports

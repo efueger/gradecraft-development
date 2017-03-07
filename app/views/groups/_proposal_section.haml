@@ -1,6 +1,0 @@
-%section
-  .proposals
-    = render partial: "proposal_fields", locals: { f: f }
-    = render partial: "groups/proposal_display", locals: { group: @group } if @group.persisted?
-
-    %button{role: "button", type: "button", class: "add-proposal button"} Add a Proposal

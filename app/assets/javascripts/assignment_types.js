@@ -44,20 +44,6 @@
       return false;
     });
 
-    $form.on('click', '.add-proposal', function(e) {
-      var $wrapper = $('.proposals');
-      var template = $('#proposal-template').html().replace(/child_index/g, $wrapper.children('.proposal').length);
-      $wrapper.append(template);
-      return false;
-    });
-
-    $form.on('click', '.remove-proposal', function(e) {
-      var $link = $(this);
-      $link.prev('input.destroy').val(true);
-      $link.closest('fieldset.proposal').hide();
-      return false;
-    });
-  
     // persistence plugin and accordion behaviour
     $(".assignment_type").collapse({
       show: function() {

@@ -3,13 +3,6 @@
   = render partial: "layouts/alerts", locals: { model: @group }
 
   %section
-    - if @group.pending? && current_user_is_staff?
-      = f.label :approved, "Status"
-      = f.select :approved, [["Pending"], ["Approved"], ["Rejected"]]
-      .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
-
-      %hr.dotted
-
     .form-item
       = f.input :name, :label => "#{term_for :group} Name"
 
@@ -26,8 +19,16 @@
     - if current_user_is_staff?
       .form-item= f.association :students, :collection => current_course.students.order_by_name, as: :select, :label => "#{term_for :students}"
     .form_label{id: "txtStudentName"} Enter a fellow student's name to add them to this #{term_for :group}. Only one student needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
+    
+    = f.text_area :text_proposal, class: "froala"
+  
+  - if current_user_is_staff?
+    = f.label :approved, "Status"
+    = f.select :approved, [["Pending"], ["Approved"], ["Rejected"]]
+    .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
+    = f.text_area :text_feedback, class: "froala"
 
-  = render partial: "groups/proposal_section", locals: { f: f }
+    %hr.dotted
 
   .submit-buttons
     %ul
