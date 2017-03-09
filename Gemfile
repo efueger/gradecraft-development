@@ -95,7 +95,7 @@ gem 'scrypt', '2.0.2'
 
 gem 'select2-rails'
 gem 'simple_form'
-gem 'sorcery'
+gem 'sorcery', '~> 0.10.2'
 gem 'sparkpost_rails'
 gem 'uglifier'
 gem 'underscore-rails'

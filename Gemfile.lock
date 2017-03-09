@@ -574,10 +574,10 @@ GEM
     sinatra (1.0)
       rack (>= 1.0)
     slop (3.6.0)
-    sorcery (0.9.1)
+    sorcery (0.10.2)
       bcrypt (~> 3.1)
       oauth (~> 0.4, >= 0.4.4)
-      oauth2 (>= 0.8.0)
+      oauth2 (~> 1.0, >= 0.8.0)
     sparkpost_rails (1.4.0)
       rails (>= 4.0, < 5.1)
     sprockets (3.7.0)
@@ -713,7 +713,7 @@ DEPENDENCIES
   select2-rails
   simple_form
   simplecov
-  sorcery
+  sorcery (~> 0.10.2)
   sparkpost_rails
   uglifier
   underscore-rails
