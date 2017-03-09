@@ -3,7 +3,7 @@ class GoogleCalendarController < ApplicationController
   include OAuthProvider
 
   before_action only: [:add_event_to_google_calendar] do |controller|
-   controller.redirect_path events_path
+    controller.redirect_path events_path
   end
 
   oauth_provider_param :google_oauth2

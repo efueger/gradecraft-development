@@ -13,15 +13,13 @@ module GoogleCalendarHelper
   end
 
   def reroute_to_google_login_if_unauthenticated(google_authorization)
-    if google_authorization.nil?
-      redirect_to "/auth/google_oauth2"
-    end
+    return unless google_authorization.nil?
+    redirect_to "/auth/google_oauth2"
   end
 
   def refresh_if_google_authorization_is_expired(google_authorization)
-    if google_authorization.expired?
-      google_authorization.refresh!({ client_id: ENV["GOOGLE_CLIENT_ID"], client_secret: ENV["GOOGLE_SECRET"] })
-    end
+    return unless google_authorization.expired?
+    google_authorization.refresh!({ client_id: ENV["GOOGLE_CLIENT_ID"], client_secret: ENV["GOOGLE_SECRET"] })
   end
 
   def create_google_event(event)
@@ -45,5 +43,5 @@ module GoogleCalendarHelper
         "client_secret" => ENV['GOOGLE_SECRET']}
         })
   end
-  
+
 end
