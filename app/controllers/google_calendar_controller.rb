@@ -2,6 +2,10 @@ class GoogleCalendarController < ApplicationController
   include GoogleCalendarHelper
   include OAuthProvider
 
+  before_action only: [:add_event_to_google_calendar] do |controller|
+   controller.redirect_path events_path
+  end
+
   oauth_provider_param :google_oauth2
   require 'google/apis/calendar_v3'
   require 'google/api_client/client_secrets.rb'
@@ -10,20 +14,14 @@ class GoogleCalendarController < ApplicationController
   Calendar = Google::Apis::CalendarV3
 
   def index
-    redirect_to "/events"
+    redirect_to events_path
   end
 
   def add_event_to_google_calendar
     google_authorization = get_google_authorization(current_user)
-    if google_authorization.nil?
-      redirect_to "/auth/google_oauth2"
-    end
-    if Time.now > google_authorization.expires_at
-      google_authorization.refresh!({ client_id: ENV["GOOGLE_CLIENT_ID"], client_secret: ENV["GOOGLE_SECRET"] })
-    end
     event = current_course.events.find(params[:id])
     if event.open_at.nil? || event.due_at.nil?
-      redirect_to "/events", alert: "Google Calendar requires event have both START and END time!"
+      redirect_to events_path, alert: "Google Calendar requires event have both START and END time!"
     else
       begin
         google_event = create_google_event(event)
@@ -33,9 +31,9 @@ class GoogleCalendarController < ApplicationController
         calendar.authorization = secrets.to_authorization
         calendar.authorization.refresh!
         result = calendar.insert_event('primary', google_event)
-        redirect_to "/events", notice: "Event " + event.name + " successfully added to your Google Calendar"
+        redirect_to events_path, notice: "Event " + event.name + " successfully added to your Google Calendar"
       rescue Google::Apis::ServerError, Google::Apis::ClientError, Google::Apis::AuthorizationError
-        redirect_to "/events", alert: "Google Calendar encountered an Error. Your event was NOT copied to your Google calendar."
+        redirect_to events_path, alert: "Google Calendar encountered an Error. Your event was NOT copied to your Google calendar."
       end
     end
   end

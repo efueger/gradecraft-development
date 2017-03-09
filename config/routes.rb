@@ -190,8 +190,7 @@ Rails.application.routes.draw do
 
   resources :google_calendar, only: [ :index] do
     collection do
-      get "/add_event_to_google_calendar/:id", action: :add_event_to_google_calendar, as: :add_event_to_google_calendar
-      get "/refresh_google_token/:id", action: :refresh_google_token, as: :refresh_google_token
+      get "/event/:id", action: :add_event_to_google_calendar, as: :add_event_to_google_calendar
     end
   end
 

@@ -6,7 +6,22 @@ module GoogleCalendarHelper
   Calendar = Google::Apis::CalendarV3
 
   def get_google_authorization(current_user)
-    current_user.authorizations.find_by(provider: "google_oauth2")
+    google_authorization = current_user.authorizations.find_by(provider: "google_oauth2")
+    reroute_to_google_login_if_unauthenticated(google_authorization)
+    refresh_if_google_authorization_is_expired(google_authorization)
+    google_authorization
+  end
+
+  def reroute_to_google_login_if_unauthenticated(google_authorization)
+    if google_authorization.nil?
+      redirect_to "/auth/google_oauth2"
+    end
+  end
+
+  def refresh_if_google_authorization_is_expired(google_authorization)
+    if google_authorization.expired?
+      google_authorization.refresh!({ client_id: ENV["GOOGLE_CLIENT_ID"], client_secret: ENV["GOOGLE_SECRET"] })
+    end
   end
 
   def create_google_event(event)
@@ -23,12 +38,12 @@ module GoogleCalendarHelper
   end
 
   def create_google_secrets(google_authorization)
-    secrets = Google::APIClient::ClientSecrets.new({"web" =>
+    Google::APIClient::ClientSecrets.new({"web" =>
       {"access_token" => google_authorization.access_token,
         "refresh_token" => google_authorization.refresh_token,
         "client_id" => ENV['GOOGLE_CLIENT_ID'],
         "client_secret" => ENV['GOOGLE_SECRET']}
         })
-    secrets
   end
+  
 end
