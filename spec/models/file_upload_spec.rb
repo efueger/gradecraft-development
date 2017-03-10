@@ -1,13 +1,15 @@
-describe FileUpload do
-  subject { grade.file_uploads.new image_file_attrs }
+describe FileUpload , focus: true do
 
   let(:course) { create(:course) }
   let(:assignment) { create(:assignment, course: course) }
-  let(:grade) { build(:grade, course: course, assignment: assignment) }
-  let(:new_attachment) { grade.file_uploads.new image_file_attrs }
+  let(:grade) { create(:grade, course: course, assignment: assignment) }
+  let(:file) { create(:file_upload, course: course, assignment: assignment)}
+  let(:file2) { create(:file_upload, course: course, assignment: assignment)}
+  let(:attachment) { build(:attachment, grade: grade, file_upload: file)}
 
-  extend Toolkits::Models::Shared::Files
-  define_context # pull in attrs for image and text files
+  let(:new_attachment) { FileUpload.new image_file_attrs }
+
+  subject { build(:file_upload) }
 
   describe "validations" do
     it { is_expected.to be_valid }
@@ -19,10 +21,17 @@ describe FileUpload do
     end
   end
 
-  describe "uploading multiple files" do
-    it "accepts multiple files" do
-      grade.file_uploads.new text_file_attrs
-      subject.grade.save!
+  describe "grade association" do
+    before do
+      attachment.save
+    end
+
+    it "accepts multiple files through attachments" do
+      expect(grade.file_uploads.count).to equal 1
+    end
+
+    it "accepts multiple files through attachments" do
+      create(:attachment, grade: grade, file_upload: file2)
       expect(grade.file_uploads.count).to equal 2
     end
   end
