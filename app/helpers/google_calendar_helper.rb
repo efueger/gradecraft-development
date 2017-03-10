@@ -43,5 +43,4 @@ module GoogleCalendarHelper
         "client_secret" => ENV['GOOGLE_SECRET']}
         })
   end
-
 end
