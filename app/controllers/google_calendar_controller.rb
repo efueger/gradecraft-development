@@ -17,7 +17,7 @@ class GoogleCalendarController < ApplicationController
     google_authorization = get_google_authorization(current_user)
     event = current_course.events.find(params[:id])
     if event.open_at.nil? || event.due_at.nil?
-      redirect_to event, alert: "Google Calendar requires event have both START and END time!"
+      redirect_to events_path, alert: "Google Calendar requires event have both START and END time!"
     else
       begin
         google_event = create_google_event(event)
@@ -27,9 +27,9 @@ class GoogleCalendarController < ApplicationController
         calendar.authorization = secrets.to_authorization
         calendar.authorization.refresh!
         result = calendar.insert_event('primary', google_event)
-        redirect_to event, notice: "Event " + event.name + " successfully added to your Google Calendar"
+        redirect_to events_path, notice: "Event " + event.name + " successfully added to your Google Calendar"
       rescue Google::Apis::ServerError, Google::Apis::ClientError, Google::Apis::AuthorizationError
-        redirect_to event, alert: "Google Calendar encountered an Error. Your event was NOT copied to your Google calendar."
+        redirect_to events_path, alert: "Google Calendar encountered an Error. Your event was NOT copied to your Google calendar."
       end
     end
   end
