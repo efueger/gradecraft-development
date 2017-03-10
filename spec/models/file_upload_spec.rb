@@ -19,19 +19,6 @@ describe FileUpload do
     end
   end
 
-  describe "as a dependency of the submission" do
-    it "is saved when the parent submission is saved" do
-      subject.grade.save!
-      expect(subject.grade_id).to equal grade.id
-      expect(subject.new_record?).to be_falsey
-    end
-
-    it "is deleted when the parent submission is destroyed" do
-      subject.grade.save!
-      expect {grade.destroy}.to change(FileUpload, :count).by(-1)
-    end
-  end
-
   describe "uploading multiple files" do
     it "accepts multiple files" do
       grade.file_uploads.new text_file_attrs

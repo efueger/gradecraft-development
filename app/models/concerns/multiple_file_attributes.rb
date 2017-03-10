@@ -1,4 +1,4 @@
-# Define file attributes on models for inclusion of multiple files in strong params.
+# Define file attributes on models for creation of multiple files from form data.
 #
 # example
 #   def badge_params
@@ -6,7 +6,7 @@
 #       badge_files_attributes: [:id, file: []])
 #   end
 #
-# Note: These are not currently used on Grades (file_uploads_attributes)
+# Note: These are no longer used on Grades (file_uploads_attributes)
 # since grade files are uploaded via AJAX in Angular, and not submitted through
 # any form data.
 
