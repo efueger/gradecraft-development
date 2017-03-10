@@ -13,10 +13,12 @@ class FileUpload < ActiveRecord::Base
   mount_uploader :file, AttachmentUploader
   process_in_background :file
 
+  # remove once attachments rake task is run
   def course
     grade.course
   end
 
+  # remove once attachments rake task is run
   def assignment
     grade.assignment
   end
