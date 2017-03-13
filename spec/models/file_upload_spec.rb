@@ -1,15 +1,14 @@
 describe FileUpload , focus: true do
 
-  let(:course) { create(:course) }
+  # currently we need the course_number to build the attachments directory
+  let(:course) { create(:course, course_number: "101") }
   let(:assignment) { create(:assignment, course: course) }
   let(:grade) { create(:grade, course: course, assignment: assignment) }
   let(:file) { create(:file_upload, course: course, assignment: assignment)}
   let(:file2) { create(:file_upload, course: course, assignment: assignment)}
   let(:attachment) { build(:attachment, grade: grade, file_upload: file)}
 
-  let(:new_attachment) { FileUpload.new image_file_attrs }
-
-  subject { build(:file_upload) }
+  subject { file }
 
   describe "validations" do
     it { is_expected.to be_valid }
@@ -26,7 +25,7 @@ describe FileUpload , focus: true do
       attachment.save
     end
 
-    it "accepts multiple files through attachments" do
+    it "accepts a file through an attachment" do
       expect(grade.file_uploads.count).to equal 1
     end
 
@@ -37,30 +36,26 @@ describe FileUpload , focus: true do
   end
 
   describe "formatting name of mounted file" do
-    subject { new_attachment.read_attribute(:file) }
-    let(:save_grade) { new_attachment.grade.save! }
 
-    it "accepts text files as well as images" do
-      new_attachment.file = fixture_file("test_file.txt", "txt")
-      save_grade
-      expect expect(subject).to match(/\d+_test_file\.txt/)
-    end
-
-    it "has an accessible url" do
-      save_grade
-      expect expect(subject).to match(/\d+_test_image\.jpg/)
+    it "has a filename and url based off of the original file" do
+      subject.save!
+      expect(subject.filename).to eq("original_file_name")
+      expect(subject.url).to match(/\d+_test_image\.jpg/)
     end
 
     it "shortens and removes non-word characters from file names on save" do
-      new_attachment.file = fixture_file("Too long, strange characters, and Spaces (In) Name.jpg", "img/jpg")
-      save_grade
-      expect(subject).to match(/\d+_too_long__strange_characters__and_spaces_\.jpg/)
+      odd_file = create(:file_upload,
+        course: course,
+        assignment: assignment,
+        file: fixture_file("Too long, strange characters, and Spaces (In) Name.jpg", "img/jpg")
+      )
+      expect(odd_file.file.filename).to match(/\d+_too_long__strange_characters__and_spaces_\.jpg/)
     end
   end
 
   describe "url" do
-    subject { new_attachment.url }
-    before { allow(new_attachment).to receive_message_chain(:s3_object, :presigned_url) { "http://some.url" }}
+    subject { file.url }
+    before { allow(file).to receive_message_chain(:s3_object, :presigned_url) { "http://some.url" }}
 
     it "returns the presigned amazon url" do
       expect(subject).to eq("http://some.url")
