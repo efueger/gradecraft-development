@@ -8,16 +8,14 @@ class API::Grades::AttachmentsController < ApplicationController
 
     @file_uploads = []
     params[:file_uploads].each do |f|
-      file = FileUpload.create(
-        file: f, filename: f.original_filename[0..49],
-        grade_id: grade.id,
-        course_id: grade.course.id,
-        assignment_id: grade.assignment.id
-      )
-      Attachment.create(file_upload_id: file.id, grade_id: grade.id)
+      file = grade.file_uploads.create(
+        file: f,
+        filename: f.original_filename[0..49],
+        # course and assignment are used to maintain directory structure
+        course: grade.course,
+        assignment: grade.assignment)
       @file_uploads << file
     end
-
     render status: 201
   end
 
