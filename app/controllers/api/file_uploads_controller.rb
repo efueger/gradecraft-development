@@ -42,7 +42,7 @@ class API::FileUploadsController < ApplicationController
 
   # DELETE /api/file_uploads/:id
   def destroy
-    file = FileUpload.where(id: params[:id], grade_id: params[:grade_id]).first
+    file = FileUpload.where(id: params[:id]).first
     if file.present?
       file.delete_from_s3
       file.destroy
