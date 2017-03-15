@@ -348,12 +348,17 @@ Rails.application.routes.draw do
     resources :earned_badges, only: [:create, :destroy]
     get "courses/:course_id/badges/:badge_id/earned_badges/:id/confirm_earned", to: "earned_badges#confirm_earned",
       as: :earned_badge_confirm
+
+    post "grades/:grade_id/file_uploads", to: "file_uploads#create"
+    post "assignments/:assignment_id/groups/:group_id/file_uploads", to: "file_uploads#group_create"
+    delete "file_uploads/:id", to: "file_uploads#destroy"
+
     resources :grades, only: :update do
       resources :earned_badges, only: :create, module: :grades do
         delete :delete_all, on: :collection
       end
-      resources :attachments, only: [:create, :destroy], module: :grades
     end
+
     resources :grade_scheme_elements, only: :index
     resources :levels, only: :update
 

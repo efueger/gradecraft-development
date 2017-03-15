@@ -265,14 +265,10 @@
 
 #------- Grade File Methods ---------------------------------------------------#
 
-  postAttachments = (files)->
-    fd = new FormData()
-    angular.forEach(files, (file, index)->
-      fd.append("file_uploads[]", file)
-    )
-
+  # attachments to individual grades
+  _postGradeFileUploads = (fd)->
     $http.post(
-      "/api/grades/#{modelGrade.id}/attachments",
+      "/api/grades/#{grade.id}/file_uploads",
       fd,
       transformRequest: angular.identity,
       headers: { 'Content-Type': undefined }
@@ -286,9 +282,37 @@
         GradeCraftAPI.logResponse(response)
     )
 
-  deleteAttachment = (file)->
+
+  # attachments to group grades
+  _postGroupFileUploads = (fd)->
+    $http.post(
+      "/api/assignments/#{grade.assignment_id}/groups/#{_recipientId}/file_uploads",
+      fd,
+      transformRequest: angular.identity,
+      headers: { 'Content-Type': undefined }
+    ).then(
+      (response)-> # success
+        if response.status == 201
+          GradeCraftAPI.addItems(fileUploads, "file_uploads", response.data)
+        GradeCraftAPI.logResponse(response)
+
+      ,(response)-> # error
+        GradeCraftAPI.logResponse(response)
+    )
+
+  postFileUploads = (files)->
+    fd = new FormData()
+    angular.forEach(files, (file, index)->
+      fd.append("file_uploads[]", file)
+    )
+    if _recipientType == "group"
+      _postGroupFileUploads(fd)
+    else
+      _postGradeFileUploads(fd)
+
+  deleteFileUpload = (file)->
     file.deleting = true
-    $http.delete("/api/grades/#{file.grade_id}/attachments/#{file.id}").then(
+    $http.delete("/api/file_uploads/#{file.id}").then(
       (response)-> # success
         if response.status == 200
           GradeCraftAPI.deleteItem(fileUploads, file)
@@ -321,7 +345,7 @@
     setCriterionGradeLevel: setCriterionGradeLevel
     queueUpdateCriterionGrade: queueUpdateCriterionGrade
 
-    postAttachments: postAttachments
-    deleteAttachment: deleteAttachment
+    postFileUploads: postFileUploads
+    deleteFileUpload: deleteFileUpload
   }
 ]

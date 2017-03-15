@@ -6,7 +6,7 @@
     vm.fileUploads = GradeService.fileUploads
 
     vm.deleteFile = (file)->
-      GradeService.deleteAttachment(file)
+      GradeService.deleteFileUpload(file)
   ]
 
   {
@@ -28,7 +28,7 @@
       element.bind('change', ()->
         scope.$apply(()->
           model.assign(scope, element[0].files)
-          GradeService.postAttachments(element[0].files)
+          GradeService.postFileUploads(element[0].files)
         )
       )
     }
