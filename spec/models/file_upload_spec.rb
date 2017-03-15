@@ -1,4 +1,4 @@
-describe FileUpload , focus: true do
+describe FileUpload do
 
   # currently we need the course_number to build the attachments directory
   let(:course) { create(:course, course_number: "101") }
