@@ -392,3 +392,12 @@ $(function () {
 $("#analytics-switcher").change(function() {
   location = $("#analytics-switcher option:selected").attr('data-path');
 });
+
+// redraw plotlyjs charts on when window resize is over
+function resizeEnd(fn) { // eslint-disable-line no-unused-vars
+  var resizeTimer;
+  $(window).on('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(fn, 250);
+  });
+}

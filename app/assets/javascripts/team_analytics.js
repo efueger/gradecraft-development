@@ -3,6 +3,11 @@ function truncateLabel(label, max) {
   return label.length > max ? label.substr(0, max-1) + '…' : label;
 }
 
+function plotLeaderboard() {
+  // eslint-disable-next-line no-undef
+  Plotly.newPlot('leaderboardBarChart', data, layout, {displayModeBar: false});  
+}
+
 if ($('#leaderboardBarChart').length) {
   var teamScores = JSON.parse($('#leaderboardBarChart').attr('data-scores'));
   var studentTeam = $('#leaderboardBarChart').attr('data-team');
@@ -95,7 +100,7 @@ if ($('#leaderboardBarChart').length) {
         ay: -20
       }]
     }
-
-  // eslint-disable-next-line no-undef
-  Plotly.newPlot('leaderboardBarChart', data, layout, {displayModeBar: false});
+  
+  plotLeaderboard();
+  resizeEnd(plotLeaderboard);
 }
