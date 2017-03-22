@@ -28,7 +28,8 @@
 
 .class-analytics-wrapper
   display: flex
-  flex-wrap: wrap
+  @media (max-width: $media-small-max)
+    display: block
 
 .class-analytics-graph
   flex: 1
@@ -38,6 +39,10 @@
     margin-right: 0
     margin-bottom: 1rem
 
+.scores-earned-bar-chart
+  max-width: 60%
+  @media (max-width: $media-small-max)
+    max-width: 100%
 
 .in-page-nav-wrapper
   float: left

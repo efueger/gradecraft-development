@@ -84,7 +84,6 @@
 //= require students_table_filter
 //= require public_pages
 //= require statuspages
-//= require levels_per_assign
 //= require earned_badges
 //= require file_upload
 //= require highcharts
