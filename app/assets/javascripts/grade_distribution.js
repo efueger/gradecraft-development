@@ -1,15 +1,20 @@
+function plotGradeDistribution() {
+  // eslint-disable-next-line no-undef
+  Plotly.newPlot('grade_distro', gradeDistroData, gradeDistroLayout, {displayModeBar: false});
+}
+
 var $gradeDistro = $('#grade_distro');
 if ($gradeDistro.length) {
   var dataSet = JSON.parse($gradeDistro.attr('data-scores'));
   var scores = dataSet.scores;
   var userScore = dataSet.user_score[0];
 
-  var data = [{
+  var gradeDistroData = [{
     x: scores,
     type: 'box'
   }];
 
-  var layout = {
+  var gradeDistroLayout = {
     showlegend: false,
     height: 100,
     hovermode: !1,
@@ -33,9 +38,9 @@ if ($gradeDistro.length) {
   };
 
   if ($gradeDistro.hasClass('student-distro')) {
-    layout.height = 130;
+    gradeDistroLayout.height = 130;
     if (userScore) {
-      layout.annotations = [{
+      gradeDistroLayout.annotations = [{
         x: userScore,
         y: 0,
         xref: 'x',
@@ -50,7 +55,6 @@ if ($gradeDistro.length) {
       }]
     }
   }
-
-    // eslint-disable-next-line no-undef
-    Plotly.newPlot('grade_distro', data, layout, {displayModeBar: false});
+  plotGradeDistribution();
+  resizeEnd(plotGradeDistribution);
 }

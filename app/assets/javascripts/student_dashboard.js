@@ -1,3 +1,14 @@
+function plotPointBreakdown() {
+  // eslint-disable-next-line no-undef
+  Plotly.newPlot('point-breakdown-chart', pointBreakdownData, pointBreakdownLayout, {displayModeBar: false});
+
+  // set tooltip border color on hover
+  document.getElementById('point-breakdown-chart').on('plotly_hover', function(pointBreakdownData) {
+    var barColor = pointBreakdownData.points[0].fullData.marker.color;
+    $('.hovertext path').attr('data-color', barColor);
+  });
+}
+
 var $pointBreakdownChart = $('#point-breakdown-chart');
 if ($pointBreakdownChart.length) {
   var assignmentTypeTotals = JSON.parse($('#point-breakdown-chart').attr('data-pointbreakdown'));
@@ -42,9 +53,9 @@ if ($pointBreakdownChart.length) {
     traces.push(trace);
   });
 
-  var data = traces;
+  var pointBreakdownData = traces;
 
-  var layout = {
+  var pointBreakdownLayout = {
     showlegend: false,
     hovermode: 'closest',
     height: 100,
@@ -72,13 +83,8 @@ if ($pointBreakdownChart.length) {
     }
   };
 
-    // eslint-disable-next-line no-undef
-    Plotly.newPlot('point-breakdown-chart', data, layout, {displayModeBar: false});
-
-    document.getElementById('point-breakdown-chart').on('plotly_hover', function(data) {
-      var barColor = data.points[0].fullData.marker.color;
-      $('.hovertext path').attr('data-color', barColor);
-    });
+  plotPointBreakdown();
+  resizeEnd(plotPointBreakdown);
 }
 
 // Filter my planner items in "due this week" module
